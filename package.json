@@ -66,7 +66,7 @@
         "formsnap": "^1.0.0",
         "lodash.debounce": "^4.0.8",
         "lodash.isequal": "^4.5.0",
-        "lucide-svelte": "^0.379.0",
+        "lucide-svelte": "^0.474.0",
         "mode-watcher": "^0.3.0",
         "ndk#master": "link:@nostr-dev-kit/ndk#master",
         "nostr-tools": "^2.7.0",
