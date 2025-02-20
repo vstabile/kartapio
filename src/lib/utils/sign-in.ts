@@ -41,7 +41,7 @@ async function signIn(method?: SignInMethod, remotePubkey?: Hexpubkey) {
         }
     }
 
-    clearReadModels();
+    // clearReadModels();
     prepareSession();
 }
 
