@@ -7,14 +7,14 @@ import NDKSvelte, {
     type NDKFilter,
     NDKNip46Signer
 } from '@nostr-dev-kit/ndk';
+import { NDKUser } from '@nostr-dev-kit/ndk';
 import { get, type Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
+import { persisted } from 'svelte-persisted-store';
 import { SK_LIST_KIND } from '$lib/constants';
 import ndk from '$stores/ndk';
 import venueProfiles from '$stores/venues';
 import type { UserProfile } from '$lib/types';
-import { persisted } from 'svelte-persisted-store';
-import { NDKUser } from '@nostr-dev-kit/ndk';
 
 let $ndk = get(ndk);
 
@@ -109,7 +109,6 @@ async function fetchData(
     opts: IFetchDataOptions
 ): Promise<void> {
     const $session = get(session);
-    console.log('USER', $session.user);
     // set defaults
     opts.waitUntilEoseToResolve ??= true;
     opts.closeOnEose ??= false;
@@ -157,7 +156,7 @@ async function fetchData(
                 signer!.rpc.on('authUrl', (url: string) => {
                     popup = window.open(url, '_blank', 'width=300,height=350');
 
-                    let checkPopup = setInterval(() => {
+                    const checkPopup = setInterval(() => {
                         if (!popup || popup?.closed) {
                             clearInterval(checkPopup);
                         }

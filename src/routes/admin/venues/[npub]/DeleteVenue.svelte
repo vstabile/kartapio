@@ -8,7 +8,7 @@
 
     export let venue: Venue;
 
-    $: list = $skList?._encryptedTags as ['sk', string][];
+    $: list = $skList?.tags as ['sk', string][];
 
     async function remove() {
         VenueCommands.remove(venue.hexkey!, list);

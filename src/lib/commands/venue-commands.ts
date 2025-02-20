@@ -1,11 +1,11 @@
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 import { NDKEvent, NDKNip46Signer, NDKPrivateKeySigner } from '@nostr-dev-kit/ndk';
 import { generateSecretKey, getPublicKey, nip04 } from 'nostr-tools';
-import { SK_LIST_KIND } from '$lib/constants';
-import { venueSchema, skListSchema, type Venue, type SkList } from './schemas';
-import ndk from '$stores/ndk';
 import { get } from 'svelte/store';
+import { SK_LIST_KIND } from '$lib/constants';
+import ndk from '$stores/ndk';
 import session from '$stores/session';
+import { venueSchema, skListSchema, type Venue, type SkList } from './schemas';
 
 export default class VenueCommands {
     static async add(venue: Venue, skList: SkList) {
@@ -43,7 +43,7 @@ export default class VenueCommands {
             $ndk.signer!.rpc.on('authUrl', (url: string) => {
                 popup = window.open(url, '_blank', 'width=300,height=350');
 
-                let checkPopup = setInterval(() => {
+                const checkPopup = setInterval(() => {
                     if (!popup || popup?.closed) {
                         clearInterval(checkPopup);
                     }
