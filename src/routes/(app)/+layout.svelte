@@ -3,6 +3,10 @@
     import { onMount } from 'svelte';
     import ndk from '$stores/ndk';
     import Navbar from '$components/app/Navbar.svelte';
+    import signIn from '$utils/sign-in';
+    import session from '$stores/session';
+    import { generateSecretKey } from 'nostr-tools/pure';
+    import { bytesToHex } from '@noble/hashes/utils';
 
     onMount(async () => {
         // $ndk.cacheAdapter = new NDKCacheAdapterDexie({ dbName: 'NostrMenu' });
@@ -11,6 +15,12 @@
         // const sigWorker = import.meta.env.DEV ? new Worker(new URL('@nostr-dev-kit/ndk/workers/sig-verification?worker', import.meta.url), { type: 'module' }) : new NDKSigVerificationWorker();
         // $ndk.signatureVerificationWorker = sigWorker;
         await $ndk.connect(10000);
+
+        // Generate a disposable key for guest users
+        let disposableKey = generateSecretKey();
+        const hexkey = bytesToHex(disposableKey);
+        session.setPrivateKey(hexkey);
+        signIn('guest');
     });
 </script>
 

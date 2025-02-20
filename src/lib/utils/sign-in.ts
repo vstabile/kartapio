@@ -6,13 +6,13 @@ import {
     type Hexpubkey
 } from '@nostr-dev-kit/ndk';
 import { get } from 'svelte/store';
-import session, { type SignInMethod, userProfile, skList } from '$stores/session';
 import ndk from '$stores/ndk';
-import venues from '$stores/venues';
+import session, { type SignInMethod, userProfile, skList } from '$stores/session';
 import { prepareSession } from '$stores/session';
+import venues from '$stores/venues';
 import { goto } from '$app/navigation';
 
-export type LoginMethod = 'none' | 'pk' | 'nip07' | 'nip46';
+export type LoginMethod = 'none' | 'pk' | 'nip07' | 'nip46' | 'guest';
 
 const $ndk = get(ndk);
 
@@ -33,6 +33,10 @@ async function signIn(method?: SignInMethod, remotePubkey?: Hexpubkey) {
         }
         case 'nip46': {
             if (remotePubkey) await nip46SignIn(remotePubkey);
+            break;
+        }
+        case 'guest': {
+            await pkSignIn();
             break;
         }
     }
