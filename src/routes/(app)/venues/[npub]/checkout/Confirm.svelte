@@ -10,8 +10,8 @@
         const alby = await import('@getalby/bitcoin-connect');
         launchPaymentModal = alby.launchPaymentModal;
     });
-    async function startPayment() {
-        const amount = 21;
+    async function startPayment(amount) {
+        console.log(amount);
         const address = import.meta.env.VITE_LIGHTNING_ADDRESS;
         const ln = new LightningAddress(address);
         await ln.fetch();
@@ -19,9 +19,40 @@
         if (launchPaymentModal) {
             launchPaymentModal({
                 invoice: invoice.paymentRequest,
-                onPaid: ({ preimage }: { preimage: string }) => alert('Received payment! ' + preimage),
+                onPaid: ({ preimage }: { preimage: string }) =>
+                    alert('Received payment! ' + preimage),
                 onCancelled: () => alert('Payment cancelled')
             });
+        }
+    }
+
+    /**
+     * Converts a given amount in Brazilian Reais (BRL) to Satoshis (sats).
+     * @param amountInBRL - The amount in BRL to convert.
+     * @returns The equivalent amount in Satoshis.
+     */
+    export async function convertBRLtoSats(amountInBRL: number): Promise<number> {
+        try {
+            // Fetch Bitcoin price in BRL from CoinGecko API
+            const response = await fetch(
+                'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl'
+            );
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const btcPriceInBRL = data.bitcoin.brl;
+
+            // Convert BRL to BTC
+            const amountInBTC = amountInBRL / btcPriceInBRL;
+
+            // Convert BTC to Satoshis (1 BTC = 100,000,000 sats)
+            return Math.round(amountInBTC * 100_000_000);
+        } catch (error) {
+            console.error('Error fetching BTC price:', error);
+            throw new Error('Failed to convert BRL to Satoshis.');
         }
     }
 
@@ -38,7 +69,10 @@
         </div>
         <button
             class="rounded-full bg-primary px-6 py-2 text-white hover:bg-primary/90"
-            on:click={startPayment}
+            on:click={async () => {
+                const total_in_sats = await convertBRLtoSats(parseFloat(total));
+                startPayment(total_in_sats);
+            }}
         >
             Confirm
         </button>
