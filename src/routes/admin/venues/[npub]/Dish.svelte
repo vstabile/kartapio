@@ -95,7 +95,7 @@
 </script>
 
 <div
-    class="dish-container flex items-center justify-between space-x-4 pb-2 text-sm last:pb-2 sm:pb-0 sm:text-base sm:last:pb-6"
+    class="dish-container mb-2 flex items-center justify-between space-x-4 pb-2 text-sm last:pb-2 sm:pb-0 sm:text-base sm:last:pb-6"
     id={dish.id}
     class:editing
     class:hidden={$searchResults && !$searchResults.includes(dish.id)}

@@ -69,7 +69,7 @@
                                                 <img
                                                     src={dish.images.at(0)}
                                                     alt={dish.name}
-                                                    class="h-16 w-16 rounded-lg"
+                                                    class="mb-2 h-16 w-16 rounded-lg object-cover"
                                                 />
                                             {:else}
                                                 <LucideImage

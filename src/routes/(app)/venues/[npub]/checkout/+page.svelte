@@ -50,7 +50,11 @@
         <div class="flex items-center">
             <div>
                 {#if item.images?.length > 0}
-                    <img src={item.images.at(0)} alt={item.name} class="h-16 w-16 rounded-lg" />
+                    <img
+                        src={item.images.at(0)}
+                        alt={item.name}
+                        class="mb-2 h-16 w-16 rounded-lg object-cover"
+                    />
                 {:else}
                     <LucideImage class="h-10 w-10 rounded-lg text-gray-400" />
                 {/if}
@@ -71,6 +75,13 @@
         </div>
     </div>
 {/each}
+<button
+    class="text-sm text-primary"
+    on:click={() => {
+        $cart = [];
+        goto(parentPath);
+    }}>Empty cart</button
+>
 
 <h2 class="mb-4 mt-6 text-lg font-medium">Delivery address</h2>
 
