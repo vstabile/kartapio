@@ -6,8 +6,10 @@
     import { NDKEvent, NDKUser } from '@nostr-dev-kit/ndk';
     import { nip19 } from 'nostr-tools';
     import { v4 as uuidv4 } from 'uuid';
+    import LucideLoader from '~icons/lucide/loader';
 
     export let address: string;
+    export let waiting: boolean = false;
 
     const venueNpub = $page.params.npub;
     const venuePubkey = nip19.decode(venueNpub).data as string;
@@ -15,6 +17,8 @@
     $: total = $cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
 
     async function placeOrder() {
+        waiting = true;
+
         let order = {
             id: uuidv4(),
             type: 0,
@@ -51,9 +55,14 @@
         </div>
         <button
             class="rounded-full bg-primary px-6 py-2 text-white hover:bg-primary/90"
+            disabled={waiting}
             on:click={placeOrder}
         >
-            Confirm
+            {#if waiting}
+                <LucideLoader class="animate-spin" />
+            {:else}
+                Confirm
+            {/if}
         </button>
     </div>
 </div>

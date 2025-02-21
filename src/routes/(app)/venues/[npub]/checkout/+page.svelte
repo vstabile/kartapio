@@ -17,6 +17,7 @@
     import session from '$stores/session';
 
     let subscribed = false;
+    let waiting = false;
     const address = 'Rodovia SC 401, 4100 - Km4 - Saco Grande, Florianópolis - SC, 88032-005';
 
     $: parentPath = $page.url.pathname.split('/').slice(0, -1).join('/');
@@ -37,6 +38,7 @@
             const content = JSON.parse(event.content);
 
             console.log(content);
+            waiting = false;
         });
     }
 </script>
@@ -124,4 +126,4 @@
     </div>
 </RadioGroup.Root>
 
-<Confirm {address} />
+<Confirm {address} bind:waiting />
