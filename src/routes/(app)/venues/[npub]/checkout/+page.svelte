@@ -12,8 +12,25 @@
     import Confirm from './Confirm.svelte';
     import Button from '$components/ui/button/button.svelte';
     import { goto } from '$app/navigation';
+    import type { NDKEvent } from '@nostr-dev-kit/ndk';
+    import ndk from '$stores/ndk';
+    import session from '$stores/session';
+
+    const address = 'Rodovia SC 401, 4100 - Km4 - Saco Grande, Florianópolis - SC, 88032-005';
 
     $: parentPath = $page.url.pathname.split('/').slice(0, -1).join('/');
+
+    $: if ($session.user) {
+        const sub = $ndk.subscribe({
+            kinds: [4],
+            '#p': [$session.user!.pubkey],
+            since: Math.floor(Date.now() / 1000)
+        });
+
+        sub.on('event', async (event: NDKEvent) => {
+            console.log(event);
+        });
+    }
 </script>
 
 <Button
@@ -60,7 +77,7 @@
 <div class="flex items-center space-x-2 rounded-lg border p-4">
     <LucideMapPin class="mr-2 h-8 w-8" />
     <div class="text-sm text-gray-500">
-        Rodovia SC 401, 4100 - Km4 - Saco Grande, Florianópolis - SC, 88032-005
+        {address}
     </div>
     <a href="#mock" class="text-sm text-primary">Change</a>
 </div>
@@ -88,4 +105,4 @@
     </div>
 </RadioGroup.Root>
 
-<Confirm />
+<Confirm address />
