@@ -14,8 +14,4 @@
     });
 </script>
 
-<Navbar />
-
-<div class="h-screen bg-gray-50 px-4 py-8 sm:px-10 sm:pt-10">
-    <slot />
-</div>
+<slot />

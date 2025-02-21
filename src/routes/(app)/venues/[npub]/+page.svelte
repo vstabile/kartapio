@@ -7,6 +7,7 @@
     import SearchBox from '$components/SearchBox.svelte';
     import { searchResults } from '$stores/search';
     import { Product } from '$stores/venues';
+    import { dishFormSchema } from '../../../admin/venues/[npub]/schema';
 
     const npub = $page.params.npub;
 
@@ -19,89 +20,115 @@
     $: if (venue) allDishes = venue.stalls.flatMap((stall) => stall.products);
 </script>
 
-{#if venue}
-    <div class="flex justify-between">
-        <div class="flex w-full items-center justify-start">
-            {#if venue && venue?.picture != ''}
-                <img src={venue?.picture} alt={venue?.name} class="mr-4 h-24" />
-            {/if}
-            <div class="block w-full justify-between sm:flex">
-                <div class="block pb-6">
-                    <h1 class="text-4xl font-extrabold">{venue?.name}</h1>
-                    <p class="pt-2 text-gray-600">{venue?.about}</p>
-                </div>
-                <div class="flex">
-                    <SearchBox dishes={allDishes} />
+<div
+    style="background-color: rgba(255, 248, 235, 1);"
+    class="bg-gray-50 sm:px-10 sm:pt-10"
+>
+    {#if venue}
+        <div class="flex justify-between pb-4">
+            <div class="flex w-full items-center justify-start">
+                <div class="block w-full justify-between sm:flex">
+                    <div class="relative w-screen">
+                        <!-- Imagem preenchendo toda a tela -->
+                        <img
+                            class="full object-cover"
+                            src="https://cdn.acritica.net/img/pc/920/600/dn_arquivo/2022/05/front-view-woman-eating-meat-burger.jpg"
+                            alt="Cheeseburger Madero"
+                        />
+
+                        <!-- Span sobreposto no canto superior esquerdo -->
+                        <span
+                            class="absolute left-2 top-2 rounded-full bg-[#1A472A] px-4 py-2 text-[11px] font-bold text-white"
+                        >
+                            {venue?.name}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="m-5">
+            <SearchBox dishes={allDishes} />
+        </div>
+        <div
+            class="grid grid-cols-1 gap-2 pb-4 pt-2 lg:grid-cols-2 2xl:grid-cols-3"
+            class:hidden={$searchResults?.length == 0}
+        >
+            {#each venue.stalls as menu (menu.id)}
+                <div class="flex flex-col">
+                    <Card.Header>
+                        <Card.Title class="text-balck flex justify-between">
+                            {menu.name}
+                        </Card.Title>
+                        <Card.Description class="text-black">
+                            {menu.description}
+                        </Card.Description>
+                    </Card.Header>
+                    <div class="flex h-full flex-col justify-between">
+                        <Card.Content class="h-full px-1 py-0">
+                            {#if menu.products?.length > 0}
+                                {#each menu.products as dish (dish.id)}
+                                    <div
+                                        class="inline-inherit items-center justify-center"
+                                        style="padding: 10px;"
+                                        class:hidden={$searchResults &&
+                                            !$searchResults.includes(dish.id)}
+                                    >
+                                        <div
+                                            class="flex w-[347px] items-center gap-6 rounded-2xl p-6"
+                                            style="background-color: rgb(0 0 0 / 6%)"
+                                        >
+                                            <!-- Imagem do Produto -->
+                                            <img
+                                                class="h-20 w-20 rounded-lg object-cover"
+                                                src="https://static.itdg.com.br/images/640-440/49687a8a7a7110c7f560b9c7e96a9d0e/254679-shutterstock-364110890-1-.jpg"
+                                                alt="Cheeseburger Madero"
+                                            />
+
+                                            <!-- Conteúdo do Produto -->
+                                            <div class="flex flex-1 flex-col text-black">
+                                                <h2 class="text-sm font-bold">{dish.name}</h2>
+                                                <p class="text-balck" style="font-size: 11px;">
+                                                    {dish.description}
+                                                </p>
+                                                <div class="mt-1 flex items-center justify-between">
+                                                    <!-- Preço -->
+                                                    <span
+                                                        style="background-color: rgba(26, 71, 42, 0.15); color:rgba(26, 71, 42, 1);"
+                                                        class="rounded-full px-4 py-2 text-[9px] font-bold text-white"
+                                                        >{`${menu.currency} ${dish.price}`}</span
+                                                    >
+                                                    <!-- Contador -->
+                                                    <div class="flex items-center space-x-4">
+                                                        <button
+                                                            style="background-color: rgba(26, 71, 42, 1);color: rgba(232, 213, 181, 1);"
+                                                            class="flex h-8 w-8 items-center justify-center rounded-full text-xl text-white"
+                                                            >−</button
+                                                        >
+                                                        <span class="text-lg">0</span>
+                                                        <button
+                                                            style="background-color: rgba(26, 71, 42, 1);color: rgba(232, 213, 181, 1);"
+                                                            class="flex h-8 w-8 items-center justify-center rounded-full text-xl text-white"
+                                                            >+</button
+                                                        >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {/each}
+                            {/if}
+                        </Card.Content>
+                    </div>
+                    <Card.Footer class="block"></Card.Footer>
+                </div>
+            {/each}
+        </div>
+    {/if}
 
     <div
-        class="grid grid-cols-1 gap-2 pb-4 pt-2 lg:grid-cols-2 2xl:grid-cols-3"
-        class:hidden={$searchResults?.length == 0}
+        class="flex h-48 w-full items-center"
+        class:hidden={!$searchResults || $searchResults.length > 0}
     >
-        {#each venue.stalls as menu (menu.id)}
-            <Card.Root class="flex flex-col">
-                <Card.Header>
-                    <Card.Title class="flex justify-between">
-                        {menu.name}
-                    </Card.Title>
-                    <Card.Description>
-                        {menu.description}
-                    </Card.Description>
-                </Card.Header>
-                <div class="flex h-full flex-col justify-between">
-                    <Card.Content class="h-full px-6 py-0">
-                        {#if menu.products?.length > 0}
-                            {#each menu.products as dish (dish.id)}
-                                <div
-                                    class="flex items-center justify-between"
-                                    class:hidden={$searchResults &&
-                                        !$searchResults.includes(dish.id)}
-                                >
-                                    <div class="flex items-center">
-                                        <div>
-                                            {#if dish.images?.length > 0}
-                                                <img
-                                                    src={dish.images.at(0)}
-                                                    alt={dish.name}
-                                                    class="h-16 w-16 rounded-lg"
-                                                />
-                                            {:else}
-                                                <LucideImage
-                                                    class="h-10 w-10 rounded-lg text-gray-400"
-                                                />
-                                            {/if}
-                                        </div>
-                                        <div class="ml-3">
-                                            <p class="text-sm font-medium leading-none">
-                                                {dish.name}
-                                            </p>
-                                            <p class="text-sm text-muted-foreground">
-                                                {dish.description}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="flex justify-end">
-                                        <div class="min-w-max">
-                                            {`${dish.price} ${menu.currency}`}
-                                        </div>
-                                    </div>
-                                </div>
-                            {/each}
-                        {/if}
-                    </Card.Content>
-                </div>
-                <Card.Footer class="block"></Card.Footer>
-            </Card.Root>
-        {/each}
+        <p class=" w-full text-center text-gray-600">No search results found</p>
     </div>
-{/if}
-
-<div
-    class="flex h-48 w-full items-center"
-    class:hidden={!$searchResults || $searchResults.length > 0}
->
-    <p class=" w-full text-center text-gray-600">No search results found</p>
 </div>
