@@ -14,6 +14,8 @@
     import isEqual from 'lodash.isequal';
     import { searchResults } from '$stores/search';
     import LucideGripVertical from '~icons/lucide/grip-vertical';
+    import * as Dialog from '$lib/components/ui/dialog';
+    import Input from '$components/ui/input/input.svelte';
 
     export let venue: Venue;
     export let menu: Stall;
@@ -22,7 +24,8 @@
     const data = {
         name: dish.name,
         description: dish.description,
-        price: dish.price
+        price: dish.price,
+        images: dish.images || []
     };
 
     const { form, validateForm } = superForm(data, {
@@ -41,6 +44,7 @@
     }
 
     async function handleUpdate() {
+        console.log($form);
         if (isEqual($form, data)) {
             editing = false;
             return;
@@ -97,13 +101,27 @@
     class:hidden={$searchResults && !$searchResults.includes(dish.id)}
 >
     <div class="flex items-center">
-        <div class="hidden sm:flex">
+        <div class="hidden cursor-default sm:flex">
             {#if dish.images?.length > 0}
-                <img src={dish.images.at(0)} alt={dish.name} class="h-12 w-12 rounded-lg" />
+                <img
+                    src={dish.images.at(0)}
+                    alt={dish.name}
+                    class="h-12 w-12 rounded-lg object-cover"
+                />
             {:else}
                 <LucideImage class="h-10 w-10 rounded-lg text-gray-400" />
             {/if}
         </div>
+        <Dialog.Root open={editing}>
+            <Dialog.Content>
+                <Dialog.Header>
+                    <Dialog.Title>Choose an image</Dialog.Title>
+                    <Dialog.Description>
+                        <Input type="text" bind:value={$form.images[0]} />
+                    </Dialog.Description>
+                </Dialog.Header>
+            </Dialog.Content>
+        </Dialog.Root>
         <div class="ml-0 sm:ml-3">
             <p class="text-sm font-medium leading-none">
                 <input
