@@ -7,6 +7,8 @@
     import { NDKEvent, NDKPrivateKeySigner, NDKUser } from '@nostr-dev-kit/ndk';
     import venues from '$stores/venues';
     import { toast } from 'svelte-sonner';
+    import { LightningAddress } from '@getalby/lightning-tools';
+    import { map } from 'zod';
 
     let subscribed = false;
 
@@ -32,6 +34,11 @@
             );
 
             const content = JSON.parse(event.content);
+            const venues = $venues;
+
+            const ln_address = await generateInvoiceAddress(
+                calculateTotalPrice(content.items, venues)
+            );
 
             toast.success('A new order has been received', {
                 description: `Delivery at: ${content.address}`
@@ -45,7 +52,7 @@
                 payment_options: [
                     {
                         type: 'ln',
-                        link: 'lninvoice'
+                        link: ln_address
                     },
                     {
                         type: 'creditCard'
@@ -68,6 +75,45 @@
             await paymentRequestEvent.sign(new NDKPrivateKeySigner(venueKeys[pubkey]));
             await paymentRequestEvent.publish();
         });
+    }
+    type ProductOrder = {
+        product_id: string;
+        quantity: number;
+    };
+
+    type VenueProduct = {
+        id: string;
+        price: number;
+    };
+
+    type Venue = {
+        stalls: {
+            products: VenueProduct[];
+        }[];
+    };
+
+    function calculateTotalPrice(products: ProductOrder[], venues: Venue[]): number {
+        let totalPrice = 0;
+
+        for (const product of products) {
+            for (const venue of venues) {
+                for (const stall of venue.stalls) {
+                    const foundProduct = stall.products.find((p) => p.id === product.product_id);
+                    if (foundProduct) {
+                        totalPrice += foundProduct.price * product.quantity;
+                    }
+                }
+            }
+        }
+
+        return totalPrice;
+    }
+    async function generateInvoiceAddress(amount) {
+        const address = import.meta.env.VITE_LIGHTNING_ADDRESS;
+        const ln = new LightningAddress(address);
+        await ln.fetch();
+        const invoice = await ln.requestInvoice({ satoshi: amount });
+        return invoice.paymentRequest;
     }
 
     /**
