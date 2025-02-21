@@ -5,8 +5,8 @@ export interface CartItem {
     name: string;
     description: string;
     price: number;
-    currency: string;
     quantity: number;
+    images: string[];
 }
 
 export type Cart = CartItem[];

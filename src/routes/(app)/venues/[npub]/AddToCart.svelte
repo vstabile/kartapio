@@ -38,7 +38,7 @@
                         name: product.name,
                         description: product.description,
                         price: product.price,
-                        currency: product.currency,
+                        images: product.images,
                         quantity: 1
                     }
                 ];

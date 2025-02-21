@@ -20,9 +20,6 @@ importers:
       '@nostr-dev-kit/ndk-svelte':
         specifier: ^2.2.15
         version: 2.2.15(typescript@5.4.5)
-      bits-ui:
-        specifier: ^0.21.9
-        version: 0.21.9(svelte@4.2.17)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -41,9 +38,6 @@ importers:
       lodash.isequal:
         specifier: ^4.5.0
         version: 4.5.0
-      lucide-svelte:
-        specifier: ^0.379.0
-        version: 0.379.0(svelte@4.2.17)
       mode-watcher:
         specifier: ^0.3.0
         version: 0.3.0(svelte@4.2.17)
@@ -123,6 +117,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
+      bits-ui:
+        specifier: ^0.22.0
+        version: 0.22.0(svelte@4.2.17)
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -138,6 +135,9 @@ importers:
       eslint-plugin-svelte:
         specifier: ^2.39.0
         version: 2.39.0(eslint@8.57.0)(svelte@4.2.17)
+      lucide-svelte:
+        specifier: ^0.379.0
+        version: 0.379.0(svelte@4.2.17)
       postcss:
         specifier: ^8.4.38
         version: 8.4.38
@@ -863,10 +863,10 @@ packages:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
 
-  bits-ui@0.21.9:
-    resolution: {integrity: sha512-tMoHi2QbsNKJsPDoXGi07OMx6F8LVMSNYMMcntFX4fPPvy+SJSeZYOKlBMmneiSg7smpWzg+h20q0q01OvyxZQ==}
+  bits-ui@0.22.0:
+    resolution: {integrity: sha512-r7Fw1HNgA4YxZBRcozl7oP0bheQ8EHh+kfMBZJgyFISix8t4p/nqDcHLmBgIiJ3T5XjYnJRorYDjIWaCfhb5fw==}
     peerDependencies:
-      svelte: ^4.0.0 || ^5.0.0-next.118
+      svelte: ^4.0.0 || ^5.0.0
 
   bits-ui@0.9.9:
     resolution: {integrity: sha512-LkdkyTtpXdkjBzPZJVJgpcre4fut6DONoprMfadHFo82HNUhph+02CxDjYEcZcThb5z4YjSxMlCYvQPZm+YtfQ==}
@@ -3419,7 +3419,7 @@ snapshots:
 
   binary-extensions@2.3.0: {}
 
-  bits-ui@0.21.9(svelte@4.2.17):
+  bits-ui@0.22.0(svelte@4.2.17):
     dependencies:
       '@internationalized/date': 3.5.4
       '@melt-ui/svelte': 0.76.2(svelte@4.2.17)
