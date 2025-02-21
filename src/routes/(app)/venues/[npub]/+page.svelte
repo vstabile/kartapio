@@ -90,7 +90,7 @@
                                         <div class="min-w-max">
                                             {`${dish.price} ${menu.currency}`}
                                         </div>
-                                        <AddToCart productId={dish.id} />
+                                        <AddToCart product={dish} />
                                     </div>
                                 </div>
                             {/each}

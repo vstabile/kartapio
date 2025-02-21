@@ -1,6 +1,14 @@
-import { writable } from 'svelte/store';
+import { persisted } from 'svelte-persisted-store';
 
-type CartItem = ['d', string, number];
+export interface CartItem {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    currency: string;
+    quantity: number;
+}
+
 export type Cart = CartItem[];
 
-export const cart = writable<Cart>([]);
+export const cart = persisted<Cart>('cart', []);
