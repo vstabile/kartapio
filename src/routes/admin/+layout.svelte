@@ -6,6 +6,7 @@
     import Navbar from '$components/admin/Navbar.svelte';
     import { NDKEvent, NDKPrivateKeySigner, NDKUser } from '@nostr-dev-kit/ndk';
     import venues from '$stores/venues';
+    import { toast } from 'svelte-sonner';
 
     let subscribed = false;
 
@@ -31,6 +32,10 @@
             );
 
             const content = JSON.parse(event.content);
+
+            toast.success('A new order has been received', {
+                description: `Delivery at: ${content.address}`
+            });
 
             // Send payment request event to customer
             const paymentRequest = {

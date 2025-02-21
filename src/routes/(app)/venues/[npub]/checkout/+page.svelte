@@ -105,4 +105,4 @@
     </div>
 </RadioGroup.Root>
 
-<Confirm address />
+<Confirm {address} />
