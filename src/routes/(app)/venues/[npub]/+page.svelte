@@ -7,6 +7,9 @@
     import SearchBox from '$components/SearchBox.svelte';
     import { searchResults } from '$stores/search';
     import { Product } from '$stores/venues';
+    import AddToCart from './AddToCart.svelte';
+    import CartFooter from './CartFooter.svelte';
+    import { cart } from '$stores/cart';
 
     const npub = $page.params.npub;
 
@@ -22,7 +25,7 @@
 {#if venue}
     <div class="flex justify-between">
         <div class="flex w-full items-center justify-start">
-            {#if venue && venue?.picture != ''}
+            {#if venue && venue?.picture != '' && venue?.picture != null}
                 <img src={venue?.picture} alt={venue?.name} class="mr-4 h-24" />
             {/if}
             <div class="block w-full justify-between sm:flex">
@@ -87,6 +90,7 @@
                                         <div class="min-w-max">
                                             {`${dish.price} ${menu.currency}`}
                                         </div>
+                                        <AddToCart product={dish} />
                                     </div>
                                 </div>
                             {/each}
@@ -105,3 +109,7 @@
 >
     <p class=" w-full text-center text-gray-600">No search results found</p>
 </div>
+
+{#if $cart.length > 0}
+    <CartFooter />
+{/if}
