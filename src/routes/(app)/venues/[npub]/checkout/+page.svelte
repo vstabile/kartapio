@@ -1,6 +1,8 @@
 <script lang="ts">
+    import { page } from '$app/stores';
     import { cart } from '$stores/cart';
     import { LucideImage } from 'lucide-svelte';
+    import LucideArrowLeft from '~icons/lucide/arrow-left';
     import LucideMapPin from '~icons/lucide/map-pin';
     import LucideBitcoin from '~icons/lucide/bitcoin';
     import LucideCreditCard from '~icons/lucide/credit-card';
@@ -8,7 +10,19 @@
     import * as RadioGroup from '$lib/components/ui/radio-group/index.js';
     import Label from '$components/ui/label/label.svelte';
     import Confirm from './Confirm.svelte';
+    import Button from '$components/ui/button/button.svelte';
+    import { goto } from '$app/navigation';
+
+    $: parentPath = $page.url.pathname.split('/').slice(0, -1).join('/');
 </script>
+
+<Button
+    variant="outline"
+    class="mb-4 mt-[-10px] h-10 w-10 rounded-full p-0 text-muted-foreground"
+    on:click={() => goto(parentPath)}
+>
+    <LucideArrowLeft />
+</Button>
 
 <h1 class="mb-6 text-2xl font-bold">Confirm your order details</h1>
 
