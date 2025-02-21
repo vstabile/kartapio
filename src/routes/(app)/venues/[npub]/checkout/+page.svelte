@@ -13,8 +13,13 @@
     import Button from '$components/ui/button/button.svelte';
     import { goto } from '$app/navigation';
     import type { NDKEvent } from '@nostr-dev-kit/ndk';
+    import { NDKEvent, NDKPrivateKeySigner, NDKUser } from '@nostr-dev-kit/ndk';
+    import venues from '$stores/venues';
     import ndk from '$stores/ndk';
     import session from '$stores/session';
+
+    $: venuePubkeys = $venues.map((venue) => venue.pubkey);
+    $: venueKeys = Object.fromEntries($venues.map((venue) => [venue.pubkey, venue.hexkey]));
 
     const address = 'Rodovia SC 401, 4100 - Km4 - Saco Grande, Florianópolis - SC, 88032-005';
 
@@ -29,6 +34,15 @@
 
         sub.on('event', async (event: NDKEvent) => {
             console.log(event);
+            const pubkey = event.tags.find((t: any) => t[0] === 'p')?.[1];
+            if (!pubkey) return;
+
+            console.log(venueKeys)
+            await event.decrypt(
+                new NDKUser({ pubkey: event.pubkey }),
+                new NDKPrivateKeySigner(venueKeys[pubkey])
+            );
+            console.log('Received event:', event);
         });
     }
 </script>
