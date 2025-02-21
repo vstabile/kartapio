@@ -7,6 +7,7 @@
     import SearchBox from '$components/SearchBox.svelte';
     import { searchResults } from '$stores/search';
     import { Product } from '$stores/venues';
+    import AddToCart from './AddToCart.svelte';
 
     const npub = $page.params.npub;
 
@@ -87,6 +88,7 @@
                                         <div class="min-w-max">
                                             {`${dish.price} ${menu.currency}`}
                                         </div>
+                                        <AddToCart productId={dish.id} />
                                     </div>
                                 </div>
                             {/each}
