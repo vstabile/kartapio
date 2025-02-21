@@ -12,20 +12,17 @@
     import Confirm from './Confirm.svelte';
     import Button from '$components/ui/button/button.svelte';
     import { goto } from '$app/navigation';
-    import type { NDKEvent } from '@nostr-dev-kit/ndk';
-    import { NDKEvent, NDKPrivateKeySigner, NDKUser } from '@nostr-dev-kit/ndk';
-    import venues from '$stores/venues';
+    import { NDKEvent, NDKUser } from '@nostr-dev-kit/ndk';
     import ndk from '$stores/ndk';
     import session from '$stores/session';
 
-    $: venuePubkeys = $venues.map((venue) => venue.pubkey);
-    $: venueKeys = Object.fromEntries($venues.map((venue) => [venue.pubkey, venue.hexkey]));
-
+    let subscribed = false;
     const address = 'Rodovia SC 401, 4100 - Km4 - Saco Grande, Florianópolis - SC, 88032-005';
 
     $: parentPath = $page.url.pathname.split('/').slice(0, -1).join('/');
 
-    $: if ($session.user) {
+    $: if (!subscribed && $session.user?.pubkey) {
+        subscribed = true;
         const sub = $ndk.subscribe({
             kinds: [4],
             '#p': [$session.user!.pubkey],
@@ -34,15 +31,12 @@
 
         sub.on('event', async (event: NDKEvent) => {
             console.log(event);
-            const pubkey = event.tags.find((t: any) => t[0] === 'p')?.[1];
-            if (!pubkey) return;
 
-            console.log(venueKeys)
-            await event.decrypt(
-                new NDKUser({ pubkey: event.pubkey }),
-                new NDKPrivateKeySigner(venueKeys[pubkey])
-            );
-            console.log('Received event:', event);
+            await event.decrypt(new NDKUser({ pubkey: event.pubkey }), $ndk.signer);
+
+            const content = JSON.parse(event.content);
+
+            console.log(content);
         });
     }
 </script>

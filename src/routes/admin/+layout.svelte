@@ -8,7 +8,6 @@
     import venues from '$stores/venues';
     import { toast } from 'svelte-sonner';
     import { LightningAddress } from '@getalby/lightning-tools';
-    import { map } from 'zod';
 
     let subscribed = false;
 
@@ -34,15 +33,14 @@
             );
 
             const content = JSON.parse(event.content);
-            const venues = $venues;
-
-            const ln_address = await generateInvoiceAddress(
-                calculateTotalPrice(content.items, venues)
-            );
 
             toast.success('A new order has been received', {
                 description: `Delivery at: ${content.address}`
             });
+
+            const lnInvoice = await generateInvoiceAddress(
+                calculateTotalPrice(content.items, $venues)
+            );
 
             // Send payment request event to customer
             const paymentRequest = {
@@ -52,7 +50,7 @@
                 payment_options: [
                     {
                         type: 'ln',
-                        link: ln_address
+                        link: lnInvoice
                     },
                     {
                         type: 'creditCard'
@@ -71,7 +69,10 @@
                 tags: [['p', event.pubkey]]
             });
 
-            await paymentRequestEvent.encrypt(new NDKUser({ pubkey: event.pubkey }));
+            await paymentRequestEvent.encrypt(
+                new NDKUser({ pubkey: event.pubkey }),
+                new NDKPrivateKeySigner(venueKeys[pubkey])
+            );
             await paymentRequestEvent.sign(new NDKPrivateKeySigner(venueKeys[pubkey]));
             await paymentRequestEvent.publish();
         });
@@ -108,7 +109,7 @@
 
         return totalPrice;
     }
-    async function generateInvoiceAddress(amount) {
+    async function generateInvoiceAddress(amount: number) {
         const address = import.meta.env.VITE_LIGHTNING_ADDRESS;
         const ln = new LightningAddress(address);
         await ln.fetch();
