@@ -120,7 +120,7 @@
         {/each}
         <button
             class="text-sm text-primary"
-            style="color: rgba(26, 71, 42, 1);font-weight: bold;text-align:start; margin:0px 10px 10px;"
+            style="color: rgb(28 118 170);text-align:start; margin:0px 10px 10px;"
             on:click={() => {
                 $cart = [];
                 goto(parentPath);
