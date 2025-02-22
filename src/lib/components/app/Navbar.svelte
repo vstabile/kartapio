@@ -1,5 +1,5 @@
 <script lang="ts">
-    import SignInButton from '$components/sign-in/SignInButton.svelte';
+    // import SignInButton from '$components/sign-in/SignInButton.svelte';
 </script>
 
 <nav class="flex items-center justify-center bg-white px-10" style="padding-top: 1rem; padding-bottom: 2rem; ">

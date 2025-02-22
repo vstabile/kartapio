@@ -8,6 +8,9 @@
     import { searchResults } from '$stores/search';
     import { Product } from '$stores/venues';
     import { dishFormSchema } from '../../../admin/venues/[npub]/schema';
+    import AddToCart from './AddToCart.svelte';
+    import CartFooter from './CartFooter.svelte';
+    import { cart } from '$stores/cart';
 
     const npub = $page.params.npub;
 
@@ -78,11 +81,17 @@
                                             style="background-color: rgb(0 0 0 / 6%)"
                                         >
                                             <!-- Imagem do Produto -->
-                                            <img
-                                                class="h-20 w-20 rounded-lg object-cover"
-                                                src="https://static.itdg.com.br/images/640-440/49687a8a7a7110c7f560b9c7e96a9d0e/254679-shutterstock-364110890-1-.jpg"
-                                                alt="Cheeseburger Madero"
-                                            />
+{#if dish.images?.length > 0}
+                                                <img
+                                                    src={dish.images.at(0)}
+                                                    alt={dish.name}
+                                                    class="h-10 w-10 rounded-lg text-gray-400"
+                                                />
+                                            {:else}
+                                                <LucideImage
+                                                    class="h-20 w-20 rounded-lg object-cover"
+                                                />
+                                            {/if}
 
                                             <!-- Conteúdo do Produto -->
                                             <div class="flex flex-1 flex-col text-black">
@@ -97,6 +106,7 @@
                                                         class="rounded-full px-4 py-2 text-[9px] font-bold text-white"
                                                         >{`${menu.currency} ${dish.price}`}</span
                                                     >
+ <AddToCart product={dish} />
                                                     <!-- Contador -->
                                                     <div class="flex items-center space-x-4">
                                                         <button
@@ -132,3 +142,7 @@
         <p class=" w-full text-center text-gray-600">No search results found</p>
     </div>
 </div>
+
+{#if $cart.length > 0}
+    <CartFooter />
+{/if}

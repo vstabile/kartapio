@@ -18,7 +18,7 @@ import type { UserProfile } from '$lib/types';
 
 let $ndk = get(ndk);
 
-export type SignInMethod = 'none' | 'pk' | 'nip07' | 'nip46';
+export type SignInMethod = 'none' | 'pk' | 'nip07' | 'nip46' | 'guest';
 
 export type Session = {
     signInMethod: SignInMethod;
