@@ -74,87 +74,110 @@
     }
 </script>
 
-<Button
-    variant="outline"
-    class="mb-4 mt-[-10px] h-10 w-10 rounded-full p-0 text-muted-foreground"
-    on:click={() => goto(parentPath)}
+<div
+    style="background-color: rgba(255, 248, 235, 1);"
+    class="h-full bg-gray-50 px-4 py-6 sm:px-6 sm:pt-10"
 >
-    <LucideArrowLeft />
-</Button>
+    <Button
+        variant="outline"
+        style="background-color: rgba(0, 0, 0, 0.06); color: black;"
+        class="mb-4 mt-[-10px] h-10 w-10 rounded-full p-0 text-muted-foreground"
+        on:click={() => goto(parentPath)}
+    >
+        <LucideArrowLeft />
+    </Button>
 
-<h1 class="mb-6 text-2xl font-bold">Confirm your order details</h1>
+    <h1 class="mb-6 text-2xl font-bold text-black" style="font-size: xx-large;">
+        Confirm your order details
+    </h1>
 
-<h2 class="mb-4 text-lg font-medium">Order items</h2>
+    <h2 class="mb-4 text-lg font-medium" style="color: rgba(0, 0, 0, 0.6);">Order details</h2>
 
-{#each $cart as item (item.id)}
-    <div class="flex items-center justify-between">
-        <div class="flex items-center">
-            <div>
+    <div class="grid gap-4 pb-4 pt-2">
+        {#each $cart as item (item.id)}
+            <div
+                class="flex items-center gap-4 rounded-2xl p-4"
+                style="background-color: rgb(0 0 0 / 6%)"
+            >
                 {#if item.images?.length > 0}
                     <img
                         src={item.images.at(0)}
                         alt={item.name}
-                        class="mb-2 h-16 w-16 rounded-lg object-cover"
+                        class="h-16 w-16 rounded-lg object-cover"
                     />
                 {:else}
-                    <LucideImage class="h-10 w-10 rounded-lg text-gray-400" />
+                    <LucideImage class="h-16 w-16 rounded-lg text-gray-400" />
                 {/if}
+                <div class="flex flex-1 flex-col text-black">
+                    <p class="text-sm font-bold">{item.name}</p>
+                    <p class="text-[11px] text-black">{item.description}</p>
+                </div>
+                <div class="min-w-max text-right">
+                    <span class="text-sm text-gray-500">{item.quantity}x</span>
+                    <span class="text-sm font-bold"> R$ {`${item.price}`}</span>
+                </div>
             </div>
-            <div class="ml-3">
-                <p class="text-sm font-medium leading-none">
-                    {item.name}
-                </p>
-                <p class="text-sm text-muted-foreground">
-                    {item.description}
-                </p>
-            </div>
-        </div>
-        <div class="flex justify-end">
-            <div class="min-w-max">
-                <span class="text-sm text-gray-500">{item.quantity}x</span> R$ {`${item.price}`}
-            </div>
+        {/each}
+        <button
+            class="text-sm text-primary"
+            style="color: rgba(26, 71, 42, 1);font-weight: bold;text-align:start;"
+            on:click={() => {
+                $cart = [];
+                goto(parentPath);
+            }}>Empty cart</button
+        >
+    </div>
+
+    <div
+        class="flex items-center justify-between rounded-lg border p-4"
+        style="background-color: rgb(0 0 0 / 6%)"
+    >
+        <!-- Ícone à esquerda -->
+        <LucideMapPin class="h-8 w-8 text-black" />
+
+        <!-- Textos à direita, organizados em coluna -->
+        <div class="flex flex-col text-right">
+            <h2
+                class="text-lg font-medium text-black"
+                style="text-align: start; font-weight: bold;"
+            >
+                Delivery address
+            </h2>
+            <div class="text-sm text-black">{address}</div>
         </div>
     </div>
-{/each}
-<button
-    class="text-sm text-primary"
-    on:click={() => {
-        $cart = [];
-        goto(parentPath);
-    }}>Empty cart</button
->
 
-<h2 class="mb-4 mt-6 text-lg font-medium">Delivery address</h2>
-
-<div class="flex items-center space-x-2 rounded-lg border p-4">
-    <LucideMapPin class="mr-2 h-8 w-8" />
-    <div class="text-sm text-gray-500">
-        {address}
-    </div>
-    <a href="#mock" class="text-sm text-primary">Change</a>
+    <h2 class="mb-4 mt-6 text-lg font-medium text-black">Payment method</h2>
+    <RadioGroup.Root value="bitcoin" class="grid gap-4">
+        <div
+            class="flex items-center justify-between rounded-lg border p-4"
+            style="background-color: rgb(0 0 0 / 6%)"
+        >
+            <Label for="bitcoin" class="flex w-full items-center gap-2 text-black">
+                <LucideBitcoin class="h-6 w-6" /> Bitcoin
+            </Label>
+            <RadioGroup.Item value="bitcoin" id="bitcoin" style="color:aqua;"/>
+        </div>
+        <div
+            class="flex items-center justify-between rounded-lg border p-4"
+            style="background-color: rgb(0 0 0 / 6%)"
+        >
+            <Label for="credit-card" class="flex w-full items-center gap-2 text-black">
+                <LucideCreditCard class="h-6 w-6" /> Credit Card
+            </Label>
+            <RadioGroup.Item value="credit-card" id="credit-card" />
+        </div>
+        <div
+            class="flex items-center justify-between rounded-lg border p-4"
+            style="background-color: rgb(0 0 0 / 6%)"
+        >
+            <Label for="option-three" class="flex w-full items-center gap-2 text-black">
+                <LucideBanknote class="h-6 w-6" /> Cash
+            </Label>
+            <RadioGroup.Item value="option-three" id="option-three" />
+        </div>
+    </RadioGroup.Root>
+    <br /><br /><br />
+    <br />
+    <Confirm {address} bind:waiting />
 </div>
-
-<h2 class="mb-4 mt-6 text-lg font-medium">Payment method</h2>
-
-<RadioGroup.Root value="bitcoin">
-    <div class="flex items-center justify-between rounded-lg border p-4">
-        <Label for="bitcoin" class="flex w-full items-center space-x-2"
-            ><LucideBitcoin class="mr-2 h-6 w-6" /> Bitcoin</Label
-        >
-        <RadioGroup.Item value="bitcoin" id="bitcoin" />
-    </div>
-    <div class="flex items-center justify-between rounded-lg border p-4">
-        <Label for="credit-card" class="flex w-full items-center space-x-2"
-            ><LucideCreditCard class="mr-2 h-6 w-6" /> Credit Card</Label
-        >
-        <RadioGroup.Item value="credit-card" id="credit-card" />
-    </div>
-    <div class="flex items-center justify-between rounded-lg border p-4">
-        <Label for="option-three" class="flex w-full items-center space-x-2"
-            ><LucideBanknote class="mr-2 h-6 w-6" /> Cash</Label
-        >
-        <RadioGroup.Item value="option-three" id="option-three" />
-    </div>
-</RadioGroup.Root>
-
-<Confirm {address} bind:waiting />
