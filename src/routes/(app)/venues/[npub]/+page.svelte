@@ -33,18 +33,19 @@
                     <img
                         class="h-48 w-full object-cover sm:h-64 md:h-80"
                         src={venue.picture}
+                        alt="Venue"
                         alt="Cheeseburger Madero"
                     />
                 {:else}
                     <img
                         class="h-48 w-full object-cover sm:h-64 md:h-80"
                         src="https://cdn.acritica.net/img/pc/920/600/dn_arquivo/2022/05/front-view-woman-eating-meat-burger.jpg"
-                        alt="Cheeseburger Madero"
+                        alt="Cheeseburger"
                     />
                 {/if}
                 <!-- Span sobreposto no canto superior esquerdo -->
                 <span
-                    class="absolute left-2 top-2 rounded-full bg-[#1A472A] px-3 py-1 text-[11px] font-bold text-white"
+                    class="absolute left-2 top-2 rounded-full bg-[#1A472A] px-3 py-1 text-[11px] font-bold text-white text-2xl"
                 >
                     {venue?.name}
                 </span>
