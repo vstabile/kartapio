@@ -38,9 +38,9 @@
                 description: `Delivery at: ${content.address}`
             });
 
-            const lnInvoice = await generateInvoiceAddress(
-                calculateTotalPrice(content.items, $venues)
-            );
+            const amount = await calculateTotalPrice(content.items, $venues);
+            console.log(amount)
+            const lnInvoice = await generateInvoiceAddress(amount);
 
             // Send payment request event to customer
             const paymentRequest = {
@@ -93,7 +93,7 @@
         }[];
     };
 
-    function calculateTotalPrice(products: ProductOrder[], venues: Venue[]): number {
+    async function calculateTotalPrice(products: ProductOrder[], venues: Venue[]): Promise<number> {
         let totalPrice = 0;
 
         for (const product of products) {
@@ -107,7 +107,33 @@
             }
         }
 
-        return totalPrice;
+        const totalPriceInSats = await convertBRLtoSats(totalPrice);
+        return totalPriceInSats;
+    }
+    /**
+     * Converts a given amount in Brazilian Reais (BRL) to Satoshis (sats).
+     * @param amountInBRL - The amount in BRL to convert.
+     * @returns The equivalent amount in Satoshis.
+     */
+    export async function convertBRLtoSats(amountInBRL: number): Promise<number> {
+        try {
+            // Fetch Bitcoin price in BRL from CoinGecko API
+            const response = await fetch(
+                'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl'
+            );
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            const btcPriceInBRL = data.bitcoin.brl;
+            // Convert BRL to BTC
+            const amountInBTC = amountInBRL / btcPriceInBRL;
+            // Convert BTC to Satoshis (1 BTC = 100,000,000 sats)
+            return Math.round(amountInBTC * 100_000_000);
+        } catch (error) {
+            console.error('Error fetching BTC price:', error);
+            throw new Error('Failed to convert BRL to Satoshis.');
+        }
     }
     async function generateInvoiceAddress(amount: number) {
         const address = import.meta.env.VITE_LIGHTNING_ADDRESS;
