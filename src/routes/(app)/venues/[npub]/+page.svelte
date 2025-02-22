@@ -25,30 +25,30 @@
 
 <div style="background-color: rgba(255, 248, 235, 1);" class="bg-gray-50 sm:px-10 sm:pt-10">
     {#if venue}
-        <div class="flex justify-between pb-4">
-            <div class="flex w-full items-center justify-start">
-                <div class="block w-full justify-between sm:flex">
-                    <div class="relative w-screen">
-                        <!-- Imagem preenchendo toda a tela -->
-                        <img
-                            class="full object-cover"
-                            src="https://cdn.acritica.net/img/pc/920/600/dn_arquivo/2022/05/front-view-woman-eating-meat-burger.jpg"
-                            alt="Cheeseburger Madero"
-                        />
-
-                        <!-- Span sobreposto no canto superior esquerdo -->
-                        <span
-                            class="absolute left-2 top-2 rounded-full bg-[#1A472A] px-4 py-2 text-[11px] font-bold text-white"
-                        >
-                            {venue?.name}
-                        </span>
-                    </div>
-                </div>
+        <!-- Cabeçalho com imagem e nome do venue -->
+        <div class="flex flex-col pb-4">
+            <div class="relative w-full">
+                <!-- Imagem preenchendo toda a largura -->
+                <img
+                    class="h-48 w-full object-cover sm:h-64 md:h-80"
+                    src="https://cdn.acritica.net/img/pc/920/600/dn_arquivo/2022/05/front-view-woman-eating-meat-burger.jpg"
+                    alt="Cheeseburger Madero"
+                />
+                <!-- Span sobreposto no canto superior esquerdo -->
+                <span
+                    class="absolute left-2 top-2 rounded-full bg-[#1A472A] px-3 py-1 text-[11px] font-bold text-white"
+                >
+                    {venue?.name}
+                </span>
             </div>
         </div>
+
+        <!-- Caixa de pesquisa -->
         <div class="m-5">
             <SearchBox dishes={allDishes} />
         </div>
+
+        <!-- Lista de menus com grid responsivo -->
         <div
             class="grid grid-cols-1 gap-2 pb-4 pt-2 lg:grid-cols-2 2xl:grid-cols-3"
             class:hidden={$searchResults?.length == 0}
@@ -56,7 +56,7 @@
             {#each venue.stalls as menu (menu.id)}
                 <div class="flex flex-col">
                     <Card.Header>
-                        <Card.Title class="text-balck flex justify-between">
+                        <Card.Title class="flex justify-between text-black">
                             {menu.name}
                         </Card.Title>
                         <Card.Description class="text-black">
@@ -68,13 +68,12 @@
                             {#if menu.products?.length > 0}
                                 {#each menu.products as dish (dish.id)}
                                     <div
-                                        class="inline-inherit items-center justify-center"
-                                        style="padding: 10px;"
+                                        class="inline-flex w-full items-center justify-center p-2"
                                         class:hidden={$searchResults &&
                                             !$searchResults.includes(dish.id)}
                                     >
                                         <div
-                                            class="flex w-[347px] items-center gap-6 rounded-2xl p-6"
+                                            class="flex w-full items-center gap-4 rounded-2xl p-4 sm:max-w-sm md:max-w-md lg:max-w-lg"
                                             style="background-color: rgb(0 0 0 / 6%)"
                                         >
                                             <!-- Imagem do Produto -->
@@ -82,27 +81,28 @@
                                                 <img
                                                     src={dish.images.at(0)}
                                                     alt={dish.name}
-                                                    class="h-10 w-10 rounded-lg text-gray-400"
+                                                    class="h-10 w-10 rounded-lg object-cover text-gray-400"
                                                 />
                                             {:else}
                                                 <LucideImage
-                                                    class="h-20 w-20 rounded-lg object-cover"
+                                                    class="h-10 w-10 rounded-lg object-cover"
                                                 />
                                             {/if}
 
                                             <!-- Conteúdo do Produto -->
                                             <div class="flex flex-1 flex-col text-black">
                                                 <h2 class="text-sm font-bold">{dish.name}</h2>
-                                                <p class="text-balck" style="font-size: 11px;">
+                                                <p class="truncate text-[11px] text-black">
                                                     {dish.description}
                                                 </p>
                                                 <div class="mt-1 flex items-center justify-between">
                                                     <!-- Preço -->
                                                     <span
-                                                        style="background-color: rgba(26, 71, 42, 0.15); color:rgba(26, 71, 42, 1);"
-                                                        class="rounded-full px-4 py-2 text-[9px] font-bold text-white"
-                                                        >{`${menu.currency} ${dish.price}`}</span
+                                                        style="background-color: rgba(26, 71, 42, 0.15); color: rgba(26, 71, 42, 1);"
+                                                        class="rounded-full px-3 py-1 text-[9px] font-bold"
                                                     >
+                                                        {`${menu.currency} ${dish.price}`}
+                                                    </span>
                                                     <AddToCart product={dish} />
                                                 </div>
                                             </div>
@@ -118,13 +118,15 @@
         </div>
     {/if}
 
+    <!-- Mensagem para sem resultados de pesquisa -->
     <div
         class="flex h-48 w-full items-center"
         class:hidden={!$searchResults || $searchResults.length > 0}
     >
-        <p class=" w-full text-center text-gray-600">No search results found</p>
+        <p class="w-full text-center text-gray-600">No search results found</p>
     </div>
 </div>
+<br /><br /><br />
 
 {#if $cart.length > 0}
     <CartFooter />
