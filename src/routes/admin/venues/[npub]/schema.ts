@@ -3,8 +3,7 @@ import { z } from 'zod';
 export const dishFormSchema = z.object({
     name: z.string().min(1).max(50),
     description: z.string().min(0).max(200),
-    price: z.number().gt(0),
-    images: z.array(z.string()).min(0).optional()
+    price: z.number().gt(0)
 });
 
 export const menuFormSchema = z.object({

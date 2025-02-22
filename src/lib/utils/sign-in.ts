@@ -93,7 +93,7 @@ export function signOut(): void {
     session.clear();
     userProfile.set(undefined);
 
-    goto('/admin/venues');
+    goto('/');
 }
 
 function clearReadModels() {

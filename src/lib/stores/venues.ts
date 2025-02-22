@@ -190,7 +190,6 @@ export class Product {
             name?: string;
             description?: string;
             price?: number;
-            images?: string[];
             created_at?: number;
         } = {}
     ) {
@@ -199,7 +198,7 @@ export class Product {
             stall_id: opts.stall_id ? opts.stall_id : this.stall_id,
             name: opts.name ? opts.name : this.name,
             description: opts.description ? opts.description : this.description,
-            images: opts.images ? opts.images : this.images,
+            images: this.images,
             price: opts.price ? opts.price : this.price,
             currency: this.currency
         };
