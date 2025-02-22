@@ -34,7 +34,6 @@
                         class="h-48 w-full object-cover sm:h-64 md:h-80"
                         src={venue.picture}
                         alt="Venue"
-                        alt="Cheeseburger Madero"
                     />
                 {:else}
                     <img
