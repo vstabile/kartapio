@@ -48,7 +48,7 @@
 </script>
 
 <div>
-    <Button variant="outline" class="ml-4 h-6 w-6 rounded-full px-2" on:click={remove}>-</Button>
+    <Button style="background-color: rgba(26, 71, 42, 1);color: rgba(232, 213, 181, 1);" variant="outline" class="ml-4 h-6 w-6 rounded-full px-2" on:click={remove}>-</Button>
     <span class="px-1 text-center">{quantity}</span>
-    <Button variant="outline" class="h-6 w-6 rounded-full px-2" on:click={add}>+</Button>
+    <Button style="background-color: rgba(26, 71, 42, 1);color: rgba(232, 213, 181, 1);" variant="outline" class="h-6 w-6 rounded-full px-2" on:click={add}>+</Button>
 </div>

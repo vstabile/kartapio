@@ -23,10 +23,7 @@
     $: if (venue) allDishes = venue.stalls.flatMap((stall) => stall.products);
 </script>
 
-<div
-    style="background-color: rgba(255, 248, 235, 1);"
-    class="bg-gray-50 sm:px-10 sm:pt-10"
->
+<div style="background-color: rgba(255, 248, 235, 1);" class="bg-gray-50 sm:px-10 sm:pt-10">
     {#if venue}
         <div class="flex justify-between pb-4">
             <div class="flex w-full items-center justify-start">
@@ -81,7 +78,7 @@
                                             style="background-color: rgb(0 0 0 / 6%)"
                                         >
                                             <!-- Imagem do Produto -->
-{#if dish.images?.length > 0}
+                                            {#if dish.images?.length > 0}
                                                 <img
                                                     src={dish.images.at(0)}
                                                     alt={dish.name}
@@ -106,21 +103,7 @@
                                                         class="rounded-full px-4 py-2 text-[9px] font-bold text-white"
                                                         >{`${menu.currency} ${dish.price}`}</span
                                                     >
- <AddToCart product={dish} />
-                                                    <!-- Contador -->
-                                                    <div class="flex items-center space-x-4">
-                                                        <button
-                                                            style="background-color: rgba(26, 71, 42, 1);color: rgba(232, 213, 181, 1);"
-                                                            class="flex h-8 w-8 items-center justify-center rounded-full text-xl text-white"
-                                                            >−</button
-                                                        >
-                                                        <span class="text-lg">0</span>
-                                                        <button
-                                                            style="background-color: rgba(26, 71, 42, 1);color: rgba(232, 213, 181, 1);"
-                                                            class="flex h-8 w-8 items-center justify-center rounded-full text-xl text-white"
-                                                            >+</button
-                                                        >
-                                                    </div>
+                                                    <AddToCart product={dish} />
                                                 </div>
                                             </div>
                                         </div>
