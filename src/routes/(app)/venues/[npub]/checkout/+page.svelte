@@ -14,11 +14,18 @@
     import { goto } from '$app/navigation';
     import { NDKEvent, NDKUser } from '@nostr-dev-kit/ndk';
     import ndk from '$stores/ndk';
+    import { onMount } from 'svelte';
     import session from '$stores/session';
 
     let subscribed = false;
     let waiting = false;
     const address = 'Rodovia SC 401, 4100 - Km4 - Saco Grande, Florianópolis - SC, 88032-005';
+
+    let launchPaymentModal: any;
+    onMount(async () => {
+        const alby = await import('@getalby/bitcoin-connect');
+        launchPaymentModal = alby.launchPaymentModal;
+    });
 
     $: parentPath = $page.url.pathname.split('/').slice(0, -1).join('/');
 
@@ -36,10 +43,34 @@
             await event.decrypt(new NDKUser({ pubkey: event.pubkey }), $ndk.signer);
 
             const content = JSON.parse(event.content);
+            const invoice = get_link(content.payment_options, 'ln');
+
+            if (invoice) {
+                startPayment(invoice);
+            }
 
             console.log(content);
             waiting = false;
         });
+    }
+
+    async function startPayment(invoice: string) {
+        if (launchPaymentModal) {
+            launchPaymentModal({
+                invoice: invoice,
+                onPaid: ({ preimage }: { preimage: string }) =>
+                    alert('Received payment! ' + preimage),
+                onCancelled: () => alert('Payment cancelled')
+            });
+        }
+    }
+
+    function get_link(
+        payment_options: { type: string; link?: string }[],
+        type: string
+    ): string | null {
+        const option = payment_options.find((option) => option.type === type);
+        return option?.link || null;
     }
 </script>
 
