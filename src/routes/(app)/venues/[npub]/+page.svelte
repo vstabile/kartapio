@@ -81,17 +81,17 @@
                                                 <img
                                                     src={dish.images.at(0)}
                                                     alt={dish.name}
-                                                    class="h-10 w-10 rounded-lg object-cover text-gray-400"
+                                                    class="h-20 w-20 rounded-lg object-cover"
                                                 />
                                             {:else}
                                                 <LucideImage
-                                                    class="h-10 w-10 rounded-lg object-cover"
+                                                    class="h-20 w-20 rounded-lg object-cover"
                                                 />
                                             {/if}
 
                                             <!-- Conteúdo do Produto -->
                                             <div class="flex flex-1 flex-col text-black">
-                                                <h2 class="text-sm font-bold">{dish.name}</h2>
+                                                <h2 class="text-lg font-bold">{dish.name}</h2>
                                                 <p class="truncate text-[11px] text-black">
                                                     {dish.description}
                                                 </p>
