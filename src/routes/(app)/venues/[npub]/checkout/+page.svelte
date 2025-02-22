@@ -59,7 +59,7 @@
             launchPaymentModal({
                 invoice: invoice,
                 onPaid: ({ preimage }: { preimage: string }) =>
-                    alert('Received payment! ' + preimage),
+                    console.debug('Received payment! ' + preimage),
                 onCancelled: () => alert('Payment cancelled')
             });
         }
@@ -91,7 +91,7 @@
         Confirm your order details
     </h1>
 
-    <h2 class="mb-4 text-lg font-medium" style="color: rgba(0, 0, 0, 0.6);">Order details</h2>
+    <h2 class="mb-4 text-lg font-medium" style="color: rgba(0, 0, 0, 0.6);font-weight:bold;">Order details</h2>
 
     <div class="grid gap-4 pb-4 pt-2">
         {#each $cart as item (item.id)}
@@ -103,13 +103,13 @@
                     <img
                         src={item.images.at(0)}
                         alt={item.name}
-                        class="h-16 w-16 rounded-lg object-cover"
+                        class="h-20 w-20 rounded-lg object-cover"
                     />
                 {:else}
-                    <LucideImage class="h-16 w-16 rounded-lg text-gray-400" />
+                    <LucideImage class="h-20 w-20 rounded-lg text-gray-400" />
                 {/if}
                 <div class="flex flex-1 flex-col text-black">
-                    <p class="text-sm font-bold">{item.name}</p>
+                    <p class="text-lg font-bold">{item.name}</p>
                     <p class="text-[11px] text-black">{item.description}</p>
                 </div>
                 <div class="min-w-max text-right">
@@ -120,7 +120,7 @@
         {/each}
         <button
             class="text-sm text-primary"
-            style="color: rgba(26, 71, 42, 1);font-weight: bold;text-align:start;"
+            style="color: rgb(28 118 170);text-align:start; margin:0px 10px 10px;"
             on:click={() => {
                 $cart = [];
                 goto(parentPath);
@@ -133,7 +133,7 @@
         style="background-color: rgb(0 0 0 / 6%)"
     >
         <!-- Ícone à esquerda -->
-        <LucideMapPin class="h-8 w-8 text-black" />
+        <LucideMapPin class="text-black" style="margin:8px;width:3em;height:3em;" />
 
         <!-- Textos à direita, organizados em coluna -->
         <div class="flex flex-col text-right">
@@ -143,20 +143,24 @@
             >
                 Delivery address
             </h2>
-            <div class="text-sm text-black">{address}</div>
+            <div class="text-sm text-black" style="text-align:left;">{address}</div>
         </div>
     </div>
 
-    <h2 class="mb-4 mt-6 text-lg font-medium text-black">Payment method</h2>
+    <h2 class="mb-4 mt-6 text-lg font-medium" style="color: rgba(0, 0, 0, 0.6);font-weight:bold;">Payment method</h2>
     <RadioGroup.Root value="bitcoin" class="grid gap-4">
         <div
             class="flex items-center justify-between rounded-lg border p-4"
-            style="background-color: rgb(0 0 0 / 6%)"
+            style="background-color: rgb(0 0 0 / 6%);"
         >
             <Label for="bitcoin" class="flex w-full items-center gap-2 text-black">
                 <LucideBitcoin class="h-6 w-6" /> Bitcoin
             </Label>
-            <RadioGroup.Item value="bitcoin" id="bitcoin" style="color:aqua;"/>
+            <RadioGroup.Item
+                value="bitcoin"
+                id="bitcoin"
+                style="color:rgba(26, 71, 42, 1);border-color:rgba(26, 71, 42, 1);"
+            />
         </div>
         <div
             class="flex items-center justify-between rounded-lg border p-4"
@@ -165,7 +169,11 @@
             <Label for="credit-card" class="flex w-full items-center gap-2 text-black">
                 <LucideCreditCard class="h-6 w-6" /> Credit Card
             </Label>
-            <RadioGroup.Item value="credit-card" id="credit-card" />
+            <RadioGroup.Item
+                value="credit-card"
+                id="credit-card"
+                style="color:rgba(26, 71, 42, 1);border-color:rgba(26, 71, 42, 1);"
+            />
         </div>
         <div
             class="flex items-center justify-between rounded-lg border p-4"
@@ -174,7 +182,11 @@
             <Label for="option-three" class="flex w-full items-center gap-2 text-black">
                 <LucideBanknote class="h-6 w-6" /> Cash
             </Label>
-            <RadioGroup.Item value="option-three" id="option-three" />
+            <RadioGroup.Item
+                value="option-three"
+                id="option-three"
+                style="color:rgba(26, 71, 42, 1);border-color:rgba(26, 71, 42, 1);"
+            />
         </div>
     </RadioGroup.Root>
     <br /><br /><br />

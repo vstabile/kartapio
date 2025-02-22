@@ -16,7 +16,7 @@
         </div>
         <button
             class="rounded-full bg-primary px-6 py-2 text-white hover:bg-primary/90"
-            style="background-color: rgba(26, 71, 42, 1);"
+            style="background-color: rgba(26, 71, 42, 1);font-weight:bold;color:rgb(255, 248, 235);"
             on:click={() => goto(`${$page.url.pathname}/checkout`)}
         >
             Checkout
