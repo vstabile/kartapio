@@ -59,7 +59,7 @@
             launchPaymentModal({
                 invoice: invoice,
                 onPaid: ({ preimage }: { preimage: string }) =>
-                    alert('Received payment! ' + preimage),
+                    console.debug('Received payment! ' + preimage),
                 onCancelled: () => alert('Payment cancelled')
             });
         }
