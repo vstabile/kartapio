@@ -41,7 +41,7 @@ async function signIn(method?: SignInMethod, remotePubkey?: Hexpubkey) {
         }
     }
 
-    // clearReadModels();
+    clearReadModels();
     prepareSession();
 }
 
@@ -87,13 +87,13 @@ export async function nip46SignIn(remotePubkey: Hexpubkey, privateKey?: Hexpubke
     session.setUser(remoteUser, 'nip46', privateKey);
 }
 
-export function signOut(): void {
+export function signOut(admin?: boolean): void {
     clearReadModels();
     $ndk.signer = undefined;
     session.clear();
     userProfile.set(undefined);
 
-    goto('/');
+    admin ? goto('/admin/venues') : goto('/');
 }
 
 function clearReadModels() {

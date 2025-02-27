@@ -17,10 +17,10 @@
         await $ndk.connect(10000);
 
         // Generate a disposable key for guest users
-        let disposableKey = generateSecretKey();
-        const hexkey = bytesToHex(disposableKey);
-        session.setPrivateKey(hexkey);
-        signIn('guest');
+        // let disposableKey = generateSecretKey();
+        // const hexkey = bytesToHex(disposableKey);
+        // session.setPrivateKey(hexkey);
+        // signIn('guest');
     });
 </script>
 

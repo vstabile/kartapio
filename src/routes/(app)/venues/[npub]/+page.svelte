@@ -22,7 +22,7 @@
 {#if venue}
     <div class="flex justify-between">
         <div class="flex w-full items-center justify-start">
-            {#if venue && venue?.picture != ''}
+            {#if venue && venue?.picture && venue?.picture != ''}
                 <img src={venue?.picture} alt={venue?.name} class="mr-4 h-24" />
             {/if}
             <div class="block w-full justify-between sm:flex">
@@ -56,7 +56,7 @@
                         {#if menu.products?.length > 0}
                             {#each menu.products as dish (dish.id)}
                                 <div
-                                    class="flex items-center justify-between"
+                                    class="mb-2 flex items-center justify-between"
                                     class:hidden={$searchResults &&
                                         !$searchResults.includes(dish.id)}
                                 >
@@ -66,7 +66,7 @@
                                                 <img
                                                     src={dish.images.at(0)}
                                                     alt={dish.name}
-                                                    class="h-16 w-16 rounded-lg"
+                                                    class="h-16 w-16 rounded-lg object-cover"
                                                 />
                                             {:else}
                                                 <LucideImage

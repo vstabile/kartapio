@@ -10,7 +10,7 @@
     <div class="flex w-full flex-grow items-center justify-between">
         <div class="text-sm"></div>
         <div>
-            <!-- <SignInButton /> -->
+            <SignInButton />
         </div>
     </div>
 </nav>
