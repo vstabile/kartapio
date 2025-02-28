@@ -67,7 +67,7 @@
         "lodash.debounce": "^4.0.8",
         "lodash.isequal": "^4.5.0",
         "lucide-svelte": "^0.379.0",
-        "mode-watcher": "^0.3.0",
+        "mode-watcher": "^0.5.1",
         "ndk#master": "link:@nostr-dev-kit/ndk#master",
         "nostr-tools": "^2.7.0",
         "qrcode": "^1.5.3",
